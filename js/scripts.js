@@ -9,7 +9,7 @@ function runElevator(inputs){
     resultsArray.push("invalid number entered - please try again");
   }
   else {
-    for (var i = 1; i <= inputs[2]; i++) //this works for an array with max index 2 that has been sorted.
+    for (var i = 1; i <= inputs[inputs.length-1]; i++) //because array was sorted first, last index will always be highest number.
     {
       if (inputs.includes(i)){
         resultsArray.push("Door open on floor: " + inputs[j]);
@@ -25,21 +25,16 @@ function runElevator(inputs){
 }
 $(document).ready(function(){
   $("#floorsToStop").submit(function(){
-    $("#resultsList").text("");
+    $("#resultsList").text(""); //reset
     event.preventDefault();
-
-    var firstFloorToStop = parseInt($("#firstFloor").val());
-    var secondFloorToStop = parseInt($("#secondFloor").val());
-    var thirdFloorToStop = parseInt($("#thirdFloor").val());
-    var inputs = [firstFloorToStop,secondFloorToStop,thirdFloorToStop]; 
-    var resultsArray = runElevator();
-    resultsArray.forEach(function(result){
-      $("#resultsList").append("<li>" + result + "</li>");
+    var inputs = [];
+    $('[name=floor]:checked').each(function() {
+      inputs.push(parseInt($(this).val()));
     });
+
+      var resultsArray = runElevator(inputs);
+      resultsArray.forEach(function(result){
+        $("#resultsList").append("<li>" + result + "</li>");
+      });
   });
 });
-
-
-//account for 0? No - elevators don't do that.
-//account for negative numbers? No.
-//account for submitting only two floors - this breaks it.
